@@ -26,6 +26,14 @@ Even after applying the maigc on all the toys, he cannot buy all the toys at rup
 Your task:
 You don't need to read input or print anything. Your task is to complete the function minimumMagic() which takes four arguments N, M, price, and magical_price. It returns an integer that is minimum magical operations required or -1, if not possible.
 
+Example 3:
+Input:
+N = 4, M = 21 
+price = {7,7,9,7}
+magical_price = {6,3,3,3}
+Output:
+2
+
 Constraints:
 1 <= N <= 10^5
 1 <= M <= 10^9
@@ -42,25 +50,31 @@ class Solution{
 public:
     int minimumMagic(int n, int m, vector<int> &price, vector<int> &magical_price)
     {
-      int sp=0;
-        for(int i = 0; i < n; i++){
-            sp += price[i];
+      int sum = 0;
+      for(int i = 0; i < n; i++){
+        sum += price[i];
+      }
+      if(sum <= m){
+        return 0;
+      }
+      vector <int> dif;
+      for(int i = 0; i < n; i++){
+        dif.push_back(price[i] - magical_price[i]);
+      }
+      sort(dif.begin(),dif.end());
+      int count = 0;
+      for(int i = n-1; i >= 0; i--){
+        sum -= dif[i];
+        cout<<sum<<" "<<dif[i]<<endl;
+        count++;
+        if(sum <= m){
+          return count;
         }
-        if(m >= sp){
-            return 0;
-        }
-        for(int i = 0; i < n; i++){
-            m -= magical_price[i];
-            sp -= price[i];
-            if(m >= sp){
-              return i+1;
-            }
-        }
-        return -1;
+      }
+      return -1;
     }
 };
 
-//{ Driver Code Starts.
 
 int main()
 {
@@ -80,4 +94,3 @@ int main()
         cout<<ans<<endl;
     }
 }
-// } Driver Code Ends
