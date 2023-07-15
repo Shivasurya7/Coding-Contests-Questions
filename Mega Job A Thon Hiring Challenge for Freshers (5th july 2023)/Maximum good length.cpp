@@ -50,7 +50,7 @@ class Solution{
     public:
         int maxGoodLength(vector<vector<int>>&a)
         {
-            int n = a.size(),m = a[0].size(),c;
+            int n = a.size(),m = a[0].size(),ans;
             int ma;
             if(n < m){
                 ma = n;
@@ -58,8 +58,11 @@ class Solution{
             else{
                 ma = m;
             }
-            for(int s = 1; s <= ma; s++){
-                int mi = s;
+            int min = 1,max = ma;
+            
+            while(min <= max){
+                int mid = (min+max)/2; 
+                int mi = mid,c=0;
                 for(int i = 0; i < n; i++){
                     for(int j = 0; j < m; j++){
                         if(i+mi <= n and j+mi <= m){
@@ -70,15 +73,25 @@ class Solution{
                                         f = 0;
                                     }
                                 }
+                                if(f == 0){
+                                    break;
+                                }
                             }
                             if(f){
-                                c = s;
+                                c = mid;
                             }
                         }
                     }
                 }
+                if(c>0){
+                    ans = min;
+                    min++;
+                }
+                else{
+                    max--;
+                }
             }
-            return c;
+            return ans;
         }
 };
 
